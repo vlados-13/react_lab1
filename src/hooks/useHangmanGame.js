@@ -1,10 +1,10 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 
-const MAX_ATTEMPTS = 6;
-
-export function useHangmanGame(word) {
+export function useHangmanGame(word, options = {}) {
+  const { maxAttempts = 6, inputCooldownMs = 0 } = options;
   const [guessedLetters, setGuessedLetters] = useState(new Set());
   const [gameStatus, setGameStatus] = useState('playing');
+  const lastGuessTimeRef = useRef(0);
 
   const correctLetters = useMemo(() => {
     return Array.from(guessedLetters).filter(letter => 
@@ -19,8 +19,8 @@ export function useHangmanGame(word) {
   }, [guessedLetters, word]);
 
   const remainingAttempts = useMemo(() => {
-    return MAX_ATTEMPTS - wrongLetters.length;
-  }, [wrongLetters.length]);
+    return maxAttempts - wrongLetters.length;
+  }, [wrongLetters.length, maxAttempts]);
 
   const isWon = useMemo(() => {
     return word.toUpperCase().split('').every(letter => 
@@ -42,12 +42,17 @@ export function useHangmanGame(word) {
 
   const guessLetter = useCallback((letter) => {
     if (gameStatus !== 'playing') return;
+    const now = Date.now();
+    if (inputCooldownMs > 0 && now - lastGuessTimeRef.current < inputCooldownMs) {
+      return;
+    }
     
     const upperLetter = letter.toUpperCase();
     if (guessedLetters.has(upperLetter)) return; 
     
     setGuessedLetters(prev => new Set([...prev, upperLetter]));
-  }, [guessedLetters, gameStatus]);
+    lastGuessTimeRef.current = now;
+  }, [guessedLetters, gameStatus, inputCooldownMs]);
 
   const resetGame = useCallback(() => {
     setGuessedLetters(new Set());
@@ -65,6 +70,7 @@ export function useHangmanGame(word) {
     correctLetters,
     wrongLetters,
     remainingAttempts,
+    totalAttempts: maxAttempts,
     gameStatus,
     wordDisplay,
     

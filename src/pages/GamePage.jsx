@@ -5,8 +5,9 @@ import Keyboard from "../components/Keyboard";
 import ScoreBoard from "../components/ScoreBoard";
 import WordDisplay from "../components/WordDisplay";
 import { useGameManager } from "../hooks/useGameManager";
+import GameOverModal from "../components/GameOverModal";
 
-export default function GamePage({ onGameEnd }) {
+export default function GamePage({ onGameEnd, onShowStats }) {
   const game = useGameManager(onGameEnd);
 
   useEffect(() => {
@@ -28,15 +29,16 @@ export default function GamePage({ onGameEnd }) {
       />
       
       <ScoreBoard wrongLetters={game.wrongLetters} />
-      
-      {game.isGameOver && (
-        <div className="game-over">
-          <h2>{game.isWon ? "🎉 Congratulations! You won!" : "💀 Game Over! You lost!"}</h2>
-          <p>The word was: <strong>{game.currentWord}</strong></p>
-          <p>Attempts used: <strong>{game.wrongLetters.length}/6</strong></p>
-          <button onClick={game.startNewGame}>Play Again</button>
-        </div>
-      )}
+
+      <GameOverModal
+        isOpen={game.isGameOver}
+        isWon={game.isWon}
+        word={game.currentWord}
+        attempts={game.wrongLetters.length}
+        totalAttempts={game.totalAttempts}
+        onPlayAgain={game.startNewGame}
+        onShowStats={onShowStats}
+      />
     </div>
   );
 }

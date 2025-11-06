@@ -1,18 +1,46 @@
-export default function ResultPage({ result, onRestart }) {
+import { useMemo } from 'react';
+import { useStats } from '../hooks/useStats';
+
+export default function ResultPage({ onRestart }) {
+  const { stats } = useStats();
+
+  const entries = useMemo(() => {
+    return Object.entries(stats).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [stats]);
+
   return (
     <div className="result-page">
       <div className="game-result">
-        <h1>{result?.won ? "🎉 Victory!" : "💀 Game Over!"}</h1>
-        <div className="result-details">
-          <p><strong>Word:</strong> {result?.word}</p>
-          <p><strong>Attempts:</strong> {result?.attempts}/6</p>
-          <p><strong>Result:</strong> {result?.won ? "Won" : "Lost"}</p>
-        </div>
+        <h1>Country Stats</h1>
+        {entries.length === 0 ? (
+          <p>No games recorded yet.</p>
+        ) : (
+          <div className="table-responsive">
+            <table className="stats-table" role="table">
+              <thead>
+                <tr>
+                  <th scope="col">Guessed Country</th>
+                  <th scope="col">Wins</th>
+                  <th scope="col">Losses</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map(([country, { wins, losses }]) => (
+                  <tr key={country}>
+                    <th scope="row">{country}</th>
+                    <td>{wins}</td>
+                    <td>{losses}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className="action-buttons">
         <button onClick={onRestart} className="play-again-btn">
-          🎮 Play Again
+          🏁 Back
         </button>
       </div>
     </div>

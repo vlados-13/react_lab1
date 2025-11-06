@@ -20,8 +20,9 @@ function App() {
         <GamePage
           onGameEnd={(r) => {
             setResult(r);
-            setPage("result");
+            // keep user on game page; they can open statistics from modal
           }}
+          onShowStats={() => setPage("result")}
         />
       )}
       {page === "result" && (

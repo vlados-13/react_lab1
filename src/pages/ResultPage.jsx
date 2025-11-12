@@ -1,22 +1,25 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
+import styles from './ResultPage.module.css';
 
-export default function ResultPage({ onRestart }) {
+export default function ResultPage() {
   const { stats } = useStats();
+  const navigate = useNavigate();
 
   const entries = useMemo(() => {
     return Object.entries(stats).sort((a, b) => a[0].localeCompare(b[0]));
   }, [stats]);
 
   return (
-    <div className="result-page">
-      <div className="game-result">
+    <div className={styles.resultPage}>
+      <div className={styles.gameResult}>
         <h1>Country Stats</h1>
         {entries.length === 0 ? (
           <p>No games recorded yet.</p>
         ) : (
-          <div className="table-responsive">
-            <table className="stats-table" role="table">
+          <div className={styles.tableResponsive}>
+            <table className={styles.statsTable} role="table">
               <thead>
                 <tr>
                   <th scope="col">Guessed Country</th>
@@ -38,8 +41,8 @@ export default function ResultPage({ onRestart }) {
         )}
       </div>
 
-      <div className="action-buttons">
-        <button onClick={onRestart} className="play-again-btn">
+      <div className={styles.actionButtons}>
+        <button onClick={() => navigate("/start")} className={styles.playAgainBtn}>
           🏁 Back
         </button>
       </div>

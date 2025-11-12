@@ -1,23 +1,25 @@
+import styles from "./HangmanDrawing.module.css";
+
 export default function HangmanDrawing({ lives }) {
   const maxLives = 6;
   const wrongGuesses = maxLives - lives;
 
   return (
-    <div className="hangman-container">
+    <div className={styles.hangmanContainer}>
       <svg 
         width="300" 
         height="250" 
         viewBox="0 0 300 250" 
-        className="hangman-svg"
+        className={styles.hangmanSvg}
       >
-        <g className="gallows">
+        <g className={styles.gallows}>
           <line x1="50" y1="200" x2="150" y2="200" stroke="#8b4513" strokeWidth="4" />
           <line x1="100" y1="200" x2="100" y2="50" stroke="#8b4513" strokeWidth="4" />
           <line x1="100" y1="50" x2="200" y2="50" stroke="#8b4513" strokeWidth="4" />
           <line x1="200" y1="50" x2="200" y2="80" stroke="#8b4513" strokeWidth="3" />
         </g>
 
-        <g className="hangman-figure">
+        <g className={styles.hangmanFigure}>
           {wrongGuesses >= 1 && (
             <circle cx="200" cy="95" r="15" stroke="#2c3e50" strokeWidth="3" fill="none" />
           )}
@@ -44,8 +46,8 @@ export default function HangmanDrawing({ lives }) {
         </g>
       </svg>
       
-      <div className="lives-display">
-        Lives: <span className="lives-count">{lives}</span>
+      <div className={styles.livesDisplay}>
+        Lives: <span className={styles.livesCount}>{lives}</span>
       </div>
     </div>
   );

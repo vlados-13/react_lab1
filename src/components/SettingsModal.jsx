@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalPortal from "./ModalPortal";
 import { useSettings } from "../context/SettingsContext.jsx";
+import styles from "./SettingsModal.module.css";
 
 export default function SettingsModal({ isOpen, onClose }) {
   const { settings, setDifficulty } = useSettings();
@@ -22,11 +23,11 @@ export default function SettingsModal({ isOpen, onClose }) {
 
   return (
     <ModalPortal>
-      <div className="modal-overlay">
-        <div className="modal-card">
+      <div className={styles.modalOverlay}>
+        <div className={styles.modalCard}>
           <h2>Game Settings</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="settings-form">
-            <label className="field">
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.settingsForm}>
+            <label className={styles.field}>
               <span>Difficulty</span>
               <select {...register("difficulty")}>
                 <option value="easy">Easy</option>
@@ -35,7 +36,7 @@ export default function SettingsModal({ isOpen, onClose }) {
               </select>
             </label>
 
-            <div className="modal-actions">
+            <div className={styles.modalActions}>
               <button type="button" onClick={onClose}>Cancel</button>
               <button type="submit">Save</button>
             </div>

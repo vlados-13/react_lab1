@@ -1,8 +1,10 @@
+import styles from "./Keyboard.module.css";
+
 export default function Keyboard({ onLetterClick, guessedLetters = [], disabled = false }) {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   
   return (
-    <div className="keyboard">
+    <div className={styles.keyboard}>
       {letters.map((letter) => {
         const isGuessed = guessedLetters.includes(letter);
         const isDisabled = disabled || isGuessed;
@@ -12,7 +14,7 @@ export default function Keyboard({ onLetterClick, guessedLetters = [], disabled 
             key={letter} 
             onClick={() => onLetterClick(letter)}
             disabled={isDisabled}
-            className={isGuessed ? 'guessed' : ''}
+            className={isGuessed ? styles.guessed : ''}
           >
             {letter}
           </button>

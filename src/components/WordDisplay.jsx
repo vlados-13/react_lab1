@@ -1,3 +1,5 @@
+import styles from "./WordDisplay.module.css";
+
 export default function WordDisplay({ word }) {
-  return <div className="word">{word}</div>;
+  return <div className={styles.word}>{word}</div>;
 }

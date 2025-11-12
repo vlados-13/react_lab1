@@ -1,0 +1,60 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modalCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: left;
+}
+
+.modalCard h2 {
+  margin-top: 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
+.resultDetails {
+  margin: 15px 0;
+}
+
+.resultDetails p {
+  font-size: 1.3em;
+  margin-top: 7.5px;
+  margin-bottom: 1.5px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modalActions button {
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 10px;
+  color: #2980b9;
+  padding: 12px 20px;
+  font-size: 14px;
+  margin: 5px;
+  border: 2px solid #2980b9;
+}
+
+.modalActions button:hover {
+  background-color: #2980b9;
+  color: #fff;
+}
+

@@ -1,0 +1,39 @@
+.hangmanContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.hangmanSvg {
+  max-width: 100%;
+  height: auto;
+}
+
+.gallows {
+  /* SVG group styling */
+}
+
+.hangmanFigure {
+  /* SVG group styling */
+}
+
+.livesDisplay {
+  margin-top: 15px;
+  font-size: 1.2em;
+  color: #495057;
+  font-weight: bold;
+}
+
+.livesCount {
+  color: #e74c3c;
+  font-size: 1.3em;
+}
+
+@media (max-width: 768px) {
+  .hangmanSvg {
+    width: 250px;
+    height: 200px;
+  }
+}
+

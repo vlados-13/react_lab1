@@ -1,15 +1,16 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStats } from '../hooks/useStats';
+import { useAppSelector } from '../store/hooks';
+import { selectCountryStats } from '../store/slices/resultsSlice';
 import styles from './ResultPage.module.css';
 
 export default function ResultPage() {
-  const { stats } = useStats();
+  const countryStats = useAppSelector(selectCountryStats);
   const navigate = useNavigate();
 
   const entries = useMemo(() => {
-    return Object.entries(stats).sort((a, b) => a[0].localeCompare(b[0]));
-  }, [stats]);
+    return Object.entries(countryStats).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [countryStats]);
 
   return (
     <div className={styles.resultPage}>

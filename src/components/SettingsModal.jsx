@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ModalPortal from "./ModalPortal";
-import { useSettings } from "../context/SettingsContext.jsx";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { selectSettings, setDifficulty } from "../store/slices/settingsSlice";
 import styles from "./SettingsModal.module.css";
 
 export default function SettingsModal({ isOpen, onClose }) {
-  const { settings, setDifficulty } = useSettings();
+  const dispatch = useAppDispatch();
+  const settings = useAppSelector(selectSettings);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { difficulty: settings.difficulty },
   });
@@ -17,7 +19,7 @@ export default function SettingsModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const onSubmit = (data) => {
-    setDifficulty(data.difficulty);
+    dispatch(setDifficulty(data.difficulty));
     onClose?.();
   };
 

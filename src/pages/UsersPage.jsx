@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useUsers } from '../context/UsersContext';
+import { useAppSelector } from '../store/hooks';
+import { selectPlayers } from '../store/slices/usersSlice';
 import styles from './UsersPage.module.css';
 
 export default function UsersPage() {
-  const { players } = useUsers();
+  const players = useAppSelector(selectPlayers);
   const playerList = Object.values(players).sort((a, b) => a.name.localeCompare(b.name));
 
   return (

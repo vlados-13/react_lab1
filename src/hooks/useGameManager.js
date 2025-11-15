@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useHangmanGame } from './useHangmanGame';
 import { useWordList } from './useWordList';
-import { useSettings } from '../context/SettingsContext.jsx';
-import { useStats } from './useStats';
-import { useUsers } from '../context/UsersContext';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { selectSettings } from '../store/slices/settingsSlice';
+import { recordCountryResult } from '../store/slices/resultsSlice';
+import { selectCurrentPlayer, updatePlayerStats } from '../store/slices/usersSlice';
 
 export function useGameManager(onGameEnd = null) {
+  const dispatch = useAppDispatch();
   const wordList = useWordList();
-  const { settings } = useSettings();
-  const { recordResult } = useStats();
-  const { currentPlayer, updatePlayerStats } = useUsers();
+  const settings = useAppSelector(selectSettings);
+  const currentPlayer = useAppSelector(selectCurrentPlayer);
   const recordedRef = useRef(false);
   const gameState = useHangmanGame(wordList.currentWord, {
     maxAttempts: settings.maxAttempts,
@@ -19,14 +20,19 @@ export function useGameManager(onGameEnd = null) {
   useEffect(() => {
     if (gameState.isGameOver) {
       if (!recordedRef.current) {
-        recordResult(wordList.currentWord, gameState.isWon);
+        dispatch(recordCountryResult({
+          country: wordList.currentWord,
+          won: gameState.isWon,
+        }));
         
-        // Update player stats if there's a current player
         if (currentPlayer) {
-          updatePlayerStats(currentPlayer, {
-            won: gameState.isWon,
-            attempts: gameState.wrongLetters.length,
-          });
+          dispatch(updatePlayerStats({
+            username: currentPlayer,
+            stats: {
+              won: gameState.isWon,
+              attempts: gameState.wrongLetters.length,
+            },
+          }));
         }
         
         recordedRef.current = true;
@@ -45,7 +51,7 @@ export function useGameManager(onGameEnd = null) {
       
       onGameEnd(result);
     }
-  }, [gameState.isGameOver, gameState.isWon, gameState.wrongLetters.length, wordList.currentWord, onGameEnd, recordResult, currentPlayer, updatePlayerStats]);
+  }, [gameState.isGameOver, gameState.isWon, gameState.wrongLetters.length, wordList.currentWord, onGameEnd, dispatch, currentPlayer]);
 
   const startNewGame = useCallback(() => {
     wordList.getRandomWord();

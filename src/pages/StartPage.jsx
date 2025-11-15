@@ -1,33 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsModal from "../components/SettingsModal";
-import { useUsers } from "../context/UsersContext";
+import { useAppDispatch } from "../store/hooks";
+import { addOrUpdatePlayer, setCurrentPlayer } from "../store/slices/usersSlice";
 import styles from "./StartPage.module.css";
 
 export default function StartPage() {
+  const dispatch = useAppDispatch();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const navigate = useNavigate();
-  const { addOrUpdatePlayer, setCurrentPlayer } = useUsers();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!playerName.trim()) return;
     
-    const username = addOrUpdatePlayer(playerName);
-    if (username) {
-      setCurrentPlayer(username);
-      navigate(`/users/${encodeURIComponent(username)}`);
-    }
+    const normalizedName = playerName.trim();
+    dispatch(addOrUpdatePlayer(normalizedName));
+    dispatch(setCurrentPlayer(normalizedName));
+    navigate(`/users/${encodeURIComponent(normalizedName)}`);
   };
 
   const handleStartGame = () => {
     if (playerName.trim()) {
-      const username = addOrUpdatePlayer(playerName);
-      if (username) {
-        setCurrentPlayer(username);
-        navigate(`/users/${encodeURIComponent(username)}`);
-      }
+      const normalizedName = playerName.trim();
+      dispatch(addOrUpdatePlayer(normalizedName));
+      dispatch(setCurrentPlayer(normalizedName));
+      navigate(`/users/${encodeURIComponent(normalizedName)}`);
     } else {
       navigate("/game");
     }
@@ -49,9 +48,6 @@ export default function StartPage() {
             maxLength={50}
           />
         </label>
-        <button type="submit" className={styles.submitButton}>
-          Start Game
-        </button>
       </form>
 
       <div className={styles.actions}>

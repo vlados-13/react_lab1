@@ -14,7 +14,9 @@ function readPlayersFromStorage() {
 function writePlayersToStorage(players) {
   try {
     localStorage.setItem(PLAYERS_STORAGE_KEY, JSON.stringify(players));
-  } catch {}
+  } catch {
+    console.error('Error writing players to storage');
+  }
 }
 
 const UsersContext = createContext({

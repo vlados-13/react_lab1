@@ -1,14 +1,15 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useUsers } from '../context/UsersContext';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { selectPlayer, setCurrentPlayer } from '../store/slices/usersSlice';
 import styles from './UserDetailPage.module.css';
 
 export default function UserDetailPage() {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getPlayerStats, setCurrentPlayer } = useUsers();
   
   const username = id ? decodeURIComponent(id) : null;
-  const stats = getPlayerStats(username);
+  const stats = useAppSelector((state) => selectPlayer(state, username));
 
   if (!username) {
     return (
@@ -20,7 +21,7 @@ export default function UserDetailPage() {
   }
 
   const handleStartGame = () => {
-    setCurrentPlayer(username);
+    dispatch(setCurrentPlayer(username));
     navigate("/game");
   };
 

@@ -10,14 +10,6 @@
   height: auto;
 }
 
-.gallows {
-  /* SVG group styling */
-}
-
-.hangmanFigure {
-  /* SVG group styling */
-}
-
 .livesDisplay {
   margin-top: 15px;
   font-size: 1.2em;
